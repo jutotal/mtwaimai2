@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/mtauth/mtauth.iml" filepath="$PROJECT_DIR$/mtauth/mtauth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mtbeans/mtbeans.iml" filepath="$PROJECT_DIR$/mtbeans/mtbeans.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mtdao/mtdao.iml" filepath="$PROJECT_DIR$/mtdao/mtdao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mtutils/mtutils.iml" filepath="$PROJECT_DIR$/mtutils/mtutils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mtwaimai.iml" filepath="$PROJECT_DIR$/mtwaimai.iml" />
+    </modules>
+  </component>
+</project>
