@@ -8,10 +8,10 @@
         <outputRelativeToContentRoot value="true" />
         <module name="mtbeans" />
         <module name="mtauth" />
+        <module name="mtbiz" />
         <module name="mtdao" />
         <module name="mtutils" />
         <module name="mtsearch" />
-        <module name="mtbiz" />
       </profile>
     </annotationProcessing>
   </component>
