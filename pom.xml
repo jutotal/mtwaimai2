@@ -13,6 +13,10 @@
         <module>mtbeans</module>
         <module>mtdao</module>
         <module>mtutils</module>
+        <module>mtsearch</module>
+        <module>mtbiz</module>
+        <module>mttrade</module>
+        <module>mttrade</module>
     </modules>
     <repositories>
 
