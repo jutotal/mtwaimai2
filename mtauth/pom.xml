@@ -56,4 +56,12 @@
       </plugins>
     </pluginManagement>
   </build>
+  <!-- 依赖mtdao-->
+  <dependencies>
+    <dependency>
+      <groupId>cn.lystudio.mt</groupId>
+      <artifactId>mtdao</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
 </project>

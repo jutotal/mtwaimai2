@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/mtdao/mtdao.iml" filepath="$PROJECT_DIR$/mtdao/mtdao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mthotel/mthotel.iml" filepath="$PROJECT_DIR$/mthotel/mthotel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mtplane/mtplane.iml" filepath="$PROJECT_DIR$/mtplane/mtplane.iml" />
       <module fileurl="file://$PROJECT_DIR$/mttrade/mttrade.iml" filepath="$PROJECT_DIR$/mttrade/mttrade.iml" />
     </modules>
   </component>

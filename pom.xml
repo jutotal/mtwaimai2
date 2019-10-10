@@ -17,6 +17,8 @@
         <module>mtbiz</module>
         <module>mttrade</module>
         <module>mttrade</module>
+        <module>mtplane</module>
+        <module>mthotel</module>
     </modules>
     <repositories>
 

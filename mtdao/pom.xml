@@ -10,6 +10,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>mtdao</artifactId>
-
+    <!--依赖mtutils -->
+    <dependencies>
+        <dependency>
+            <groupId>cn.lystudio.mt</groupId>
+            <artifactId>mtutils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -9,10 +9,14 @@
         <module name="mtbeans" />
         <module name="mtauth" />
         <module name="mtbiz" />
-        <module name="mtdao" />
         <module name="mtutils" />
         <module name="mtsearch" />
+        <module name="mttrade" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="mtdao" target="1.5" />
+      <module name="mttrade" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
 </project>
