@@ -7,15 +7,18 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="mtbeans" />
+        <module name="mthotel" />
         <module name="mtauth" />
+        <module name="mtplane" />
         <module name="mtbiz" />
+        <module name="mtdao" />
         <module name="mtutils" />
         <module name="mtsearch" />
         <module name="mttrade" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="mtdao" target="1.5" />
+      <module name="mtdao" target="1.8" />
       <module name="mttrade" target="1.7" />
     </bytecodeTargetLevel>
   </component>
