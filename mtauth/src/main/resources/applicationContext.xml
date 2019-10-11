@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+	<!--1. 配置Spring注解扫描-->
+	<context:component-scan base-package="cn.lystudio.mt"/>
+	<!--2. 引入database.properties文件-->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:database.properties"/>
+	</bean>
+	<!--3. 配置dbcp数据源-->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<!--数据库驱动-->
+		<property name="driverClassName" value="${driver}"/>
+		<!--数据库连接地址-->
+		<property name="url" value="${url}"/>
+		<!--数据库登录名-->
+		<property name="username" value="${username}"/>
+		<!--登录密码-->
+		<property name="password" value="${password}"/>
+		<!--数据库连接池在初始化连接时，第一次就要创建的连接个数，默认为0-->
+		<property name="initialSize" value="${initialSize}"/>
+		<!--定义连接池中同时连接的最大连接数，默认连接为8。若设置为50，则表示可以支持单机并发50左右的处理能力-->
+		<property name="maxActive" value="${maxActive}"/>
+		<!--定义连接池中可允许的最大空闲连接数，默认连接为8。超过设置的空闲连接数将被释放掉，若设置为负数则表示不受限制-->
+		<!--maxIdle不能设置太小，因为在高负载的情况下，连接的打开时间比关闭时间要快，
+		会引起连接池中空闲连接个数上升并超过最大的空闲数，从而造成连接频繁的销毁和创建，
+		导致性能下降，所以具体设置要根据业务量来定义-->
+		<property name="maxIdle" value="${maxIdle}"/>
+		<!--定义连接池中最小连接数，默认连接数为0。低于该数值的连接池将会创建新的连接-->
+		<!--minIdle一般情况下设置的数值越接近maxIdle,系统性能越好，因为连接的创建和销毁都需要
+		消耗系统资源。这个值也不能设置得太大，否则服务器在很空闲的时候，
+		会创建minIdle个数的连接-->
+		<property name="minIdle" value="${minIdle}"/>
+		<!--定义最大等待连接时间，单位为ms。即当连接池中没有可用连接时。
+		连接池需要等待的连接释放的最大时间。若等待时间超过这个设置时间，则会抛出异常，
+		若该值设置为-1，则表示无限等待下去。该默认值为无限等待。
+		配置该数值可以避免因线程池不够而导致的请求被无限挂起和连接不可用问题-->
+		<property name="maxWait" value="${maxWait}"/>
+		<!--定义该配置项的作用是告诉连接池是否开启无用连接回收的机制，默认为false，这里调整为true-->
+		<property name="removeAbandoned" value="${removeAbandoned}"/>
+		<!--当开启了无用连接池回收的机制之后，配置该配置项，可以控制连接池在超出配置的时间后
+		回收没有用的连接，这个配置默认值为300秒，建议稍微少一点，尽量快速的回收没有用的连接-->
+		<property name="removeAbandonedTimeout" value="${removeAbandonedTimeout}"/>
+
+		<!--sql心跳-->
+		<!--定义开启Evict的定时校验循环校验-->
+		<property name="testWhileIdle" value="true"/>
+		<!--定义在进行borrowObject处理是，对拿到的连接是否进行校验，false为不校验，默认为false-->
+		<property name="testOnBorrow" value="false"/>
+		<!--定义在returnObject时，对返回的连接是否进行校验，false为不校验，默认为false-->
+		<property name="testOnReturn" value="false"/>
+		<!--定义校验使用的SQL语句，跟MySQL简单通信下，校验连接是否有效。
+		注意：该SQL语句不能太复杂，复杂的校验SQL会严重影响性能-->
+		<property name="validationQuery" value="select 1"/>
+		<!--定义Evict时间间隔，单位为毫秒，此处设值为60000，即1分钟，
+		这个值大于0才会开启Evict-->
+		<property name="timeBetweenEvictionRunsMillis" value="60000"/>
+		<!--定义每次校验连接的数量。一般情况下，该值会和maxActive大小一样，
+		每次可以校验所有的连接-->
+		<property name="numTestsPerEvictionRun" value="${maxActive}"/>
+	</bean>
+	<!--4. 配置sqlSessionFactory-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+		<property name="typeAliasesPackage" value="cn.lystudio.mt.beans.entity"/>
+	</bean>
+	<!--5. 配置事务管理器-->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!--6. 配置事务增强处理-->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED"/>
+			<tx:method name="remove*" propagation="REQUIRED"/>
+			<tx:method name="modify*" propagation="REQUIRED"/>
+			<tx:method name="find*" propagation="SUPPORTS"/>
+			<tx:method name="*" propagation="REQUIRED"/>
+		</tx:attributes>
+	</tx:advice>
+	<!--7. 配置AOP并开启注解式AOP-->
+	<aop:aspectj-autoproxy/>
+	<aop:config>
+		<aop:pointcut id="pointcut" expression="execution(* cn.lystudio.mt.auth.service.*..*(..))"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut"/>
+	</aop:config>
+	<!--8. 配置Mapper文件自动扫描器-->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.lystudio.mt.dao.mapper"/>
+	</bean>
+</beans>

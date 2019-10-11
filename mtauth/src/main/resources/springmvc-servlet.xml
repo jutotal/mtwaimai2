@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+	<!--1. 配置SpringMVC注解扫描-->
+	<context:component-scan base-package="cn.lystudio.mt.auth.controller"/>
+	<!--2. 配置注解式处理器映射包含消息转换器-->
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<!--解决JSON字符串中的中文乱码-->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+			<!--解决JSON数据转换时将日期时间戳格式指定格式-->
+			<bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html;charset=UTF-8</value>
+						<value>application/json</value>
+					</list>
+				</property>
+				<property name="features">
+					<list>
+						<value>WriteDateUseDateFormat</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<!--3. 配置自定义数据转换器-->
+	<!--<bean id="myConversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">-->
+		<!--<property name="converters">-->
+			<!--<list>-->
+				<!--<bean class="cn.supercto.smbms.converter.StringToDateConverter">-->
+					<!--<constructor-arg name="datePattern" value="yyyy-MM-dd"/>-->
+				<!--</bean>-->
+			<!--</list>-->
+		<!--</property>-->
+	<!--</bean>-->
+	<!--4. 配置静态资源映射-->
+	<!-- <mvc:resources mapping="/statics/**" location="/WEB-INF/statics/"/>-->
+	<!--5. 配置多视图解析器-->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<!--表示支持从URL中的format参数中获取服务器端返回的数据格式名称（在mediaTypes中进行匹配）-->
+		<property name="favorParameter" value="true"/>
+		<!--默认返回文本-->
+		<property name="defaultContentType" value="text/html"/>
+		<!--定义输出的数据格式列表-->
+		<property name="mediaTypes">
+			<map>
+				<entry key="html" value="text/html;charset=UTF-8"/>
+				<entry key="json" value="application/json;charset=UTF-8"/>
+				<entry key="xml" value="application/xml;charset=UTF-8"/>
+			</map>
+		</property>
+		<!--配置网页视图解析器-->
+		<property name="viewResolvers">
+			<list>
+				<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="prefix" value="/WEB-INF/jsp/"/>
+					<property name="suffix" value=".jsp"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<!--6. 支持多上传-->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="5000000"/>
+		<property name="defaultEncoding" value="UTF-8"/>
+	</bean>
+	<!--7. 配置拦截器-->
+	<!--
+   <mvc:interceptors>
+       <mvc:interceptor>
+           <mvc:mapping path="/sys/**"/>
+           <bean class="cn.supercto.smbms.interceptor.SysInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+-->
+</beans>   
